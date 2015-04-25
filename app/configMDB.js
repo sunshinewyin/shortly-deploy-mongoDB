@@ -2,13 +2,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/shortly');
 
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
-  // yay!
-});
-
-var linkSchema = new mongoose.schema({
+var linkSchema = new mongoose.Schema({
   url: String,
   base_url: String,
   code: String,
@@ -17,21 +11,15 @@ var linkSchema = new mongoose.schema({
   timestamp: { type: Date, default: Date.now }
 });
 
-var userSchema = new mongoose.schema({
+var userSchema = new mongoose.Schema({
   username: String,
   password: String,
   timestamp: { type: Date, default: Date.now }
 });
 
 var Link = mongoose.model('Link', linkSchema);
-var Link = mongoose.model('User', linkSchema);
+var User = mongoose.model('User', userSchema);
 
-var testLink = new Link({
-  url: 'http://google.com'
-})
-
-testLink.save(function(err, testLink){
-  if (err) return console.error(err);
-})
-
-module.exports = db;
+module.exports = { LinkMDB: Link,
+                   UserMDB: User
+                 };
